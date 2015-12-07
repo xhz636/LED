@@ -1,5 +1,6 @@
 #include "LED_driver.h"
 #include "SD_driver.h"
+#include "bluetooth.h"
 void setup() {
   // put your setup code here, to run once:
     pinMode(SignA, OUTPUT);
@@ -18,9 +19,9 @@ void loop() {
     show(msg);
     while(Serial.available() > 0)
     {
+        read_input();
         write_msg(input);
         read_msg("log/1");
-        Serial.read();
     }
 }
 

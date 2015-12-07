@@ -1,6 +1,6 @@
 #include "SD_driver.h"
 File HZK, ASCII, LED_MSG;
-char input[128] = "SD\xbf\xa8\xb2\xe2\xca\xd4";
+char input[128];
 void SD_init(void)
 {
     if(!SD.begin(CS))
@@ -37,21 +37,20 @@ void close_hz(void)
 void write_msg(char * s)
 {
     char i, j;
-    uint8_t zero = 0;
     read_hz();
-    if(file_test("log/1"))
-        LED_MSG = SD.open("log/1", FILE_WRITE);
-    else
+    if(SD.exists("log/1"))
+        SD.remove("log/1");
+    file_test("log/1");
+    LED_MSG = SD.open("log/1", FILE_WRITE);
+    if(!LED_MSG)
     {
         Serial.println("open failed!");
+        close_hz();
         return;
     }
     LED_MSG.seek(0);
     for(i = 0; i < 16; i++)
-        for(j = 0; j < strlen(input) || j < 8; j++)
-        {
-            if(j >= strlen(input))
-                LED_MSG.write(zero);
+        for(j = 0; j < strlen(input); j++)
             if((byte)input[j] < 128)
                 write_dots(input + j, 1, i);
             else
@@ -59,7 +58,6 @@ void write_msg(char * s)
                 write_dots(input + j, 2, i);
                 j++;
             }
-        }
     LED_MSG.close();
     close_hz();
     Serial.println("write done!");
@@ -86,6 +84,9 @@ void write_dots(char * s, byte byte_count, byte line)
 }
 void read_msg(char * filename)
 {
+    byte i;
+    byte input_long;
+    uint32_t offset;
     if(file_test(filename))
         LED_MSG = SD.open(filename);
     else
@@ -93,8 +94,13 @@ void read_msg(char * filename)
         Serial.println("read failed!");
         return;
     }
-    LED_MSG.seek(0);
-    LED_MSG.read(msg, 128);
+    input_long = strlen(input);
+    for(i = 0; i < 16; i++)
+    {
+        offset = i * input_long;
+        LED_MSG.seek(offset);
+        LED_MSG.read(msg + i * 8, 8);
+    }
     LED_MSG.close();
 }
 
