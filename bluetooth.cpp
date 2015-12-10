@@ -4,7 +4,8 @@ void read_input(void)
 {
     byte input_size = 0;
     while(Serial.available() > 0)
-        if(Serial.peek() == 0x0d)
+    {
+        if(Serial.peek() == 0x0d || Serial.peek() == 0x0a)
         {
             while(Serial.available() > 0)
                 Serial.read();
@@ -12,7 +13,17 @@ void read_input(void)
         }
         else
             input[input_size++] = Serial.read();
+        if(input_size == 30)
+        {
+            while(Serial.available() > 0)
+                Serial.read();
+            Serial.println("The input is too long, only save 30 byte!");
+            break;
+        }
+    }
     input[input_size] = '\0';
+    if(input[0] == '.')
+        return;
     if(strlen(input) < 8)
         fill_input();
     if(strlen(input) > 8)

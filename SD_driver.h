@@ -7,13 +7,15 @@
 //#define MOSI 11
 //#define MISO 12
 //#define CLK 13
-extern File HZK, ASCII, LED_MSG;
-extern char input[40];
+extern File HZK, ASCII;
+extern char input[32];
+extern int swift_delay;
+extern byte roll_en, led_en;
 void SD_init(void);
 bool file_test(char * filename);
 void read_hz(void);
 void close_hz(void);
 void write_msg(char * s);
-void write_dots(char * s, byte index, byte line);
-void read_msg(char * filename);
+void write_dots(char * s, byte index, byte line, byte col);
+void do_cmd(void);
 #endif
