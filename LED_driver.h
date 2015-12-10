@@ -9,8 +9,10 @@
 #define R1 10
 #define LAT 2
 #define CLK 3
-extern byte msg[8 * 16];
+#define MSG_LONG 24
+extern byte msg[16][MSG_LONG];
+extern byte msg_offset, msg_begin, msg_long;
 void senddata(byte data);
 void scan(byte row);
-void show(byte msg[]);
+void show();
 #endif

@@ -8,8 +8,7 @@
 //#define MISO 12
 //#define CLK 13
 extern File HZK, ASCII, LED_MSG;
-extern char input[128];
-extern byte msg[8 * 16];
+extern char input[40];
 void SD_init(void);
 bool file_test(char * filename);
 void read_hz(void);

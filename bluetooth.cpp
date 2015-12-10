@@ -15,6 +15,11 @@ void read_input(void)
     input[input_size] = '\0';
     if(strlen(input) < 8)
         fill_input();
+    if(strlen(input) > 8)
+        strcat(input, " ");
+    msg_long = strlen(input);
+    msg_offset = 0;
+    msg_begin = 0;
 }
 void fill_input(void)
 {

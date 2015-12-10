@@ -1,6 +1,7 @@
 #include "SD_driver.h"
+#include "LED_driver.h"
 File HZK, ASCII, LED_MSG;
-char input[128];
+char input[40];
 void SD_init(void)
 {
     if(!SD.begin(CS))
@@ -50,7 +51,7 @@ void write_msg(char * s)
     }
     LED_MSG.seek(0);
     for(i = 0; i < 16; i++)
-        for(j = 0; j < strlen(input); j++)
+        for(j = 0; j < msg_long; j++)
             if((byte)input[j] < 128)
                 write_dots(input + j, 1, i);
             else
@@ -85,7 +86,6 @@ void write_dots(char * s, byte byte_count, byte line)
 void read_msg(char * filename)
 {
     byte i;
-    byte input_long;
     uint32_t offset;
     if(file_test(filename))
         LED_MSG = SD.open(filename);
@@ -94,12 +94,11 @@ void read_msg(char * filename)
         Serial.println("read failed!");
         return;
     }
-    input_long = strlen(input);
     for(i = 0; i < 16; i++)
     {
-        offset = i * input_long;
+        offset = i * msg_long;
         LED_MSG.seek(offset);
-        LED_MSG.read(msg + i * 8, 8);
+        LED_MSG.read(&msg[i][0], msg_long);
     }
     LED_MSG.close();
 }
