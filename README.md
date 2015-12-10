@@ -4,7 +4,11 @@ LED点阵屏显示驱动<br>
 1.Arduino Uno R3开发板<br>
 2.HUB-08接口的16*64LED点阵显示屏<br>
 3.MicroSD Card Adapter模块<br>
-4.德飞莱LY-BL001 v2.0蓝牙模块<br>
+4.microSD卡：SanDisk 8GB class4<br>
+5.德飞莱LY-BL001 v2.0蓝牙模块<br>
+microSD卡内包含内容在Files_in_microSD文件夹内：<br>
+LED/ASCII:8*12点阵英文字库<br>
+LED/HZK16:16*16点阵GB2312汉字库<br>
 正式版实现以下功能：<br>
 1.开机界面为“欢迎使用”<br>
 2.实现蓝牙输入，最大输入为30byte<br>
